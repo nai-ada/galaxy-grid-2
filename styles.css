@@ -148,8 +148,8 @@ h1 {
   font-family: 'Poppins', sans-serif;
   text-align: center;
   margin: 0 auto;
-  position: fixed; /* Change to fixed */
-  top: 75px; /* Adjust this value to move it closer to the top */
+  position: absolute;
+  top: 75px;
   left: 50%;
   transform: translateX(-50%);
   height: auto;
@@ -212,16 +212,16 @@ footer h2 {
 
 /* custom scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 20px; /* Adjust the height as needed */
+  width: 2px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #23152e;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(#f186ff4f, #528bb9);
+  background: linear-gradient(#ff869a4f, #6d52b9);
   border-radius: 50px;
 }
 
@@ -358,14 +358,14 @@ footer h2 {
 .game-buttons-container {
   display: flex;
   justify-content: center;
-  gap: 20px; /* Adjust the gap as needed */
+  gap: 30px; /* Adjust the gap as needed */
   margin-top: 20px; /* Optional: Adjust the margin as needed */
 }
 
 #next-round-button,
 #to-main-menu-button {
-  min-width: 30px;
-  min-height: 30px;
+  min-width: 40px;
+  min-height: 45px;
   display: inline-flex;
   font-family: 'Poppins', sans-serif;
   font-size: 12px;
@@ -374,16 +374,26 @@ footer h2 {
   text-transform: uppercase;
   text-align: center;
   letter-spacing: 1.3px;
-  font-weight: 600;
+  font-weight: 500;
   border: none;
   border-radius: 1000px;
   transition: all 0.3s ease-in-out 0s;
   cursor: pointer;
   outline: none;
   position: relative;
-  padding: 10px;
-  background-color: #85346b;
+  padding-left: 18px;
+  padding-right: 18px;
+  background: #d14f9f;
+  background: linear-gradient(90deg, #8f4c79 0%, rgb(101, 111, 156) 100%);
+  box-shadow: 12px 12px 24px rgba(23, 13, 24, 0.64);
   color: rgb(255, 255, 255);
+}
+
+#next-round-button:hover,
+#next-round-button:focus,
+#to-main-menu-button:hover,
+#to-main-menu-button:focus {
+  transform: translateY(-4px);
 }
 
 .player-scores {
@@ -527,6 +537,56 @@ td {
 
 .game-section {
   margin-top: 20rem;
+}
+
+@media (min-width: 580px) {
+  .game-section {
+    margin-top: 15rem;
+  }
+
+  #next-round-button,
+  #to-main-menu-button {
+    min-width: 80px;
+    min-height: 60px;
+    font-size: 18px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .p-2 h3,
+  .p-1 h3 {
+    font-size: 1.3rem;
+  }
+
+  .p-1 h2,
+  .p-2 h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .game-buttons-container {
+    gap: 80px;
+  }
+}
+
+@media (min-width: 1450px) {
+  .game-buttons-container {
+    gap: 90px;
+    margin-top: 2.5rem;
+  }
+
+  .p-2 {
+    position: absolute;
+    left: 75%;
+    bottom: 65%;
+  }
+
+  .p-1 {
+    position: absolute;
+    right: 75%;
+    bottom: 65%;
+  }
 }
 
 @media (min-width: 400px) {
