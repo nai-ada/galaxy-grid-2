@@ -238,7 +238,7 @@ footer h2 {
   }
 
   .main-section-game h1 {
-    top: 35px; /* Adjust this value to move it closer to the top */
+    top: 35px;
   }
 }
 
@@ -260,7 +260,7 @@ footer h2 {
 
 @media (min-width: 750px) {
   .game-section h1 {
-    margin-top: 25px; /* Adjust this value to move it closer to the top */
+    margin-top: 25px;
   }
 }
 
@@ -358,8 +358,8 @@ footer h2 {
 .game-buttons-container {
   display: flex;
   justify-content: center;
-  gap: 30px; /* Adjust the gap as needed */
-  margin-top: 20px; /* Optional: Adjust the margin as needed */
+  gap: 30px;
+  margin-top: 20px;
 }
 
 #next-round-button,
@@ -405,7 +405,7 @@ footer h2 {
 #cpu-score-num,
 #player-score-num {
   display: inline-block;
-  margin-left: 10px; /* Adjust the margin as needed */
+  margin-left: 10px;
 }
 
 .p-1 h2,
@@ -647,4 +647,9 @@ td {
   .game-section {
     margin-top: 7rem;
   }
+}
+
+.won {
+  background-color: rgb(68, 0, 255);
+  border: yellow 2px solid;
 }
