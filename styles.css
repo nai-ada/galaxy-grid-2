@@ -136,9 +136,11 @@ h1 {
 
 .main-section-game h1 {
   color: white;
-  font-size: 3.4rem;
+  font-size: 3rem;
   text-transform: uppercase;
   padding-top: 2rem;
+  padding-left: 0;
+  padding-right: 0;
   background-image: linear-gradient(45deg, #96d5ff, #ff65a5);
   background-size: 100%;
   -webkit-background-clip: text;
@@ -507,7 +509,7 @@ h3 {
 }
 
 .roles {
-  margin-top: 4rem;
+  margin-top: 2rem;
   margin-bottom: 3rem;
 }
 
@@ -522,7 +524,7 @@ table {
 }
 
 td {
-  border: 5px solid #a15f8dda;
+  border: 2px solid #a15f8dda;
   border-radius: 5px;
   height: 82px;
   width: 82px;
@@ -570,7 +572,7 @@ td {
   }
 }
 
-@media (min-width: 1450px) {
+@media (min-width: 1250px) {
   .game-buttons-container {
     gap: 90px;
     margin-top: 2.5rem;
@@ -651,5 +653,9 @@ td {
 
 .won {
   background-color: rgb(68, 0, 255);
+  border: yellow 2px solid;
+}
+
+.won {
   border: yellow 2px solid;
 }

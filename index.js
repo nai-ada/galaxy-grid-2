@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // grabbing audio elements
+  // adding audio elements
   const lobbyMusic = document.getElementById('lobby-audio');
   const menuClickAudio = document.getElementById('menu-click-audio');
   const roleClickAudio = document.getElementById('role-click-audio');
@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Navigation logic
   const startButton = document.getElementById('start-button');
-  const astronautRole = document.getElementById('astronaut-role');
-  const spaceshipRole = document.getElementById('spaceship-role');
+  let astronautRole = document.getElementById('astronaut-role');
+  let spaceshipRole = document.getElementById('spaceship-role');
   const nextRoundButton = document.getElementById('next-round-button'); // Renamed variable
 
   startButton.addEventListener('click', function () {
@@ -63,74 +63,112 @@ document.addEventListener('DOMContentLoaded', function () {
     menuClickAudio.play();
   });
 
+  let userRole = '';
+  let cpuRole = '';
+
   astronautRole.addEventListener('click', function () {
     document.getElementById('selection-section').style.display = 'none';
     document.getElementById('game-section').style.display = 'block';
     roleClickAudio.play();
+
+    userRole = astronautRole;
+    cpuRole = spaceshipRole;
   });
 
   spaceshipRole.addEventListener('click', function () {
     document.getElementById('selection-section').style.display = 'none';
     document.getElementById('game-section').style.display = 'block';
     roleClickAudio.play();
+
+    userRole = spaceshipRole;
+    cpuRole = astronautRole;
   });
 
-  // Next round button sound effect
-  nextRoundButton.addEventListener('click', function () {
-    menuClickAudio.play();
+  // role selector logic
+
+  isAstronautRoleClicked = false;
+  isSpaceshipRoleClicked = false;
+
+  astronautRole.addEventListener('click', () => {
+    if ((astronautRole = 'clicked')) {
+      isAstronautRoleClicked = true;
+      userRole = astronautRole;
+      cpuRole = spaceshipRole;
+      console.log('Astronaut role clicked');
+    }
+  });
+
+  spaceshipRole.addEventListener('click', () => {
+    if ((spaceshipRole = 'clicked')) {
+      isSpaceshipRoleClicked = true;
+      userRole = spaceshipRole;
+      cpuRole = astronautRole;
+      console.log('Spaceship role clicked');
+    }
+  });
+
+  // game logic
+
+  const winCombinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  let boxes = document.getElementsByTagName('td');
+  const spaceshipClass = 'spaceship';
+  const astronautClass = 'astronaut';
+
+  // converting the tds into an array and checking to see when each box is clicked
+  Array.from(boxes).forEach((box, index) => {
+    box.addEventListener('click', (e) => {
+      console.log(`box ${index} clicked`);
+      // applying a role to a box when clicked
+      let roleFillBox = (box.innerHTML =
+        userRole === astronautRole
+          ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 75px;" />'
+          : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 75px;" />');
+
+      // adding a class to each box in correspondence to each role
+      if (userRole === astronautRole) {
+        box.classList.add(astronautClass);
+      } else {
+        box.classList.add(spaceshipClass);
+      }
+
+      // Check for winning combinations
+      winCombinations.forEach((combination) => {
+        const boxesInCombination = combination.map((i) => boxes[i]);
+        const allSameClass =
+          boxesInCombination.every((box) =>
+            box.classList.contains(spaceshipClass),
+          ) ||
+          boxesInCombination.every((box) =>
+            box.classList.contains(astronautClass),
+          );
+
+        if (allSameClass) {
+          // Apply winning class styles
+          combination.forEach((i) => boxes[i].classList.add('won'));
+
+          // Ensure styles are applied before alert
+          setTimeout(() => {
+            // Determine the winning role and display the alert
+            const winningRole = boxesInCombination[0].classList.contains(
+              astronautClass,
+              roleFillBox,
+            )
+              ? 'Astronaut'
+              : 'Spaceship';
+            alert(`The winner is ${winningRole}! Winner gets +10 points!`);
+          }, 200);
+        }
+      });
+    });
   });
 });
-
-// Game Logic
-// document.querySelectorAll('td').forEach((cell) => {
-//   cell.addEventListener('click', handleClick, { once: true });
-// });
-
-// let currentPlayer = 'X';
-
-// function handleClick(event) {
-//   const cell = event.target;
-//   cell.innerHTML = currentPlayer;
-//   currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-// }
-
-// variable with possible win combinations
-// const winCombinations = [
-//   [0, 1, 2],
-//   [3, 4, 5],
-//   [6, 7, 8],
-//   [0, 3, 6],
-//   [1, 4, 7],
-//   [2, 5, 8],
-//   [0, 4, 8],
-//   [2, 4, 6],
-// ];
-
-// // grabbing each box and creating an array from them
-// const boxes = Array.from(document.getElementsByTagName('td'));
-// // creating variables to set default scores for both player and cpu
-// let playerScore = 0;
-// let computerScore = 0;
-
-// // creating variables for player and cpu roles
-// let playerRole = 'P';
-// let computerRole = 'C';
-
-// // for every win combination in the winCombinations array, checks if each index matches our condition (which is if it contains the player's symbol)
-// function checkPlayerWin() {
-//   return winCombinations.some((combination) => {
-//     if (
-//       combination.every((index) => {
-//         let td = boxes[index];
-//         return td.classList.container(playerSymbol.toLowerCase());
-//       })
-//     ) {
-//       // else if win combination IS found, add winning class to the boxes (for styling purposes, to show that the player won)
-//       combination.forEach((index) => {
-//         boxes[index].classList.add('won');
-//       });
-//       return true;
-//     }
-//     return false; // dont execute this code if player does not win
-//   });
-// }
