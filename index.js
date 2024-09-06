@@ -125,62 +125,218 @@ document.addEventListener('DOMContentLoaded', function () {
   let playerScore = document.getElementById('player-score-num');
   let cpuScore = document.getElementById('cpu-score-num');
   let gameActive = true;
+  let isCpuTurn = false;
+  const resultMessage = document.getElementById('result-message');
+  const gameContainer = document.getElementById('game-container');
+  const subResultMsg = document.getElementById('sub-result-message');
+  // let spans = document.getElementsByTagName('span');
 
   Array.from(boxes).forEach((box, index) => {
     box.addEventListener('click', (e) => {
-      if (!gameActive || box.innerHTML !== '') return; // Prevent clicks if game is over or box is filled
+      if (!gameActive || box.innerHTML !== '' || isCpuTurn) return;
 
       console.log(`box ${index} clicked`);
-      // applying a role to a box when clicked
+      // // Add animation class to all spans within this box
+      // let spans = box.querySelectorAll('span');
+      // spans.forEach((span) => {
+      //   span.classList.add('anim');
+      // });
+
+      // // Remove animation class after 500ms
+      // setTimeout(() => {
+      //   spans.forEach((span) => {
+      //     span.classList.remove('anim');
+      //   });
+      // }, 500);
+
+      // Apply user's move
+
       box.innerHTML =
         userRole === astronautRole
-          ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 75px;" />'
-          : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 75px;" />';
+          ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 55px;" />'
+          : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 55px;" />';
+      box.classList.add(
+        userRole === astronautRole ? astronautClass : spaceshipClass,
+      );
+      // Add these styles to center the image
+      box.style.justifyContent = 'center';
+      box.style.alignItems = 'center';
 
-      // adding a class to each box in correspondence to each role
-      if (userRole === astronautRole) {
-        box.classList.add(astronautClass);
+      if (checkWin(userRole)) {
+        endGame(userRole);
+      } else if (checkDraw()) {
+        endGame('draw');
       } else {
-        box.classList.add(spaceshipClass);
+        isCpuTurn = true;
+        setTimeout(executeCpuTurn, 500);
       }
-
-      // Check for winning combinations
-      userWon();
     });
   });
-  function userWon() {
-    winCombinations.forEach((combination) => {
+
+  function checkDraw() {
+    return Array.from(boxes).every((box) => box.innerHTML !== '');
+  }
+
+  function checkWin(role) {
+    return winCombinations.some((combination) => {
       const boxesInCombination = combination.map((i) => boxes[i]);
-      const allSameClass =
-        boxesInCombination.every((box) =>
-          box.classList.contains(spaceshipClass),
-        ) ||
-        boxesInCombination.every((box) =>
-          box.classList.contains(astronautClass),
-        );
-
-      if (allSameClass) {
-        gameActive = false; // End the game
-        // Apply winning class styles
-        combination.forEach((i) => boxes[i].classList.add('won'));
-
-        // Ensure styles are applied before alert
-        setTimeout(() => {
-          // Determine the winning role and display the alert
-          const winningRole = boxesInCombination[0].classList.contains(
-            astronautClass,
-          )
-            ? 'Astronaut'
-            : 'Spaceship';
-          alert(`The winner is ${winningRole}! Winner gets +10 points!`);
-
-          // Update the score (make sure playerScore is defined)
-          if (playerScore) {
-            playerScore.innerHTML = parseInt(playerScore.innerHTML || '0') + 10;
-          }
-        }, 200);
-      }
+      return boxesInCombination.every((box) =>
+        box.classList.contains(
+          role === astronautRole ? astronautClass : spaceshipClass,
+        ),
+      );
     });
+  }
+
+  function endGame(result) {
+    gameActive = false;
+
+    // Create an overlay div for the blurred background
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(2px);
+        z-index: 999;
+    `;
+    document.body.appendChild(overlay);
+
+    // Style the result message
+    resultMessage.style.cssText = `
+        display: block;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        font-size: 2.3rem;
+        text-align: center;
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        text-transform: uppercase;
+        font-weight: bold;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 1rem;
+        border-radius: 20px;
+
+    `;
+
+    // Style the result message
+    subResultMsg.style.cssText = `
+     display: block;
+     position: fixed;
+     top: 70%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     z-index: 1000;
+     font-size: 1.3rem;
+     text-align: center;
+     color: white;
+     font-family: 'Poppins', sans-serif;
+     font-weight: bold;
+     background-color: rgba(0, 0, 0, 0.5);
+     padding: 1rem;
+     border-radius: 20px;
+
+ `;
+
+    if (result === 'draw') {
+      resultMessage.innerHTML = 'Draw!';
+      subResultMsg.innerHTML = `Click on Next Round to continue playing.`;
+    } else {
+      const winningRole = result === astronautRole ? 'Astronaut' : 'Spaceship';
+      const winningClass =
+        result === astronautRole ? astronautClass : spaceshipClass;
+
+      // Apply winning class
+      winCombinations.forEach((combination) => {
+        if (
+          combination.every((index) =>
+            boxes[index].classList.contains(winningClass),
+          )
+        ) {
+          combination.forEach((index) => {
+            boxes[index].classList.add(
+              result === userRole ? 'userwon' : 'cpuwon',
+            );
+          });
+        }
+      });
+
+      resultMessage.innerHTML = `${winningRole} wins!`;
+      subResultMsg.innerHTML = `Click Next Round to continue playing.`;
+
+      if (result === userRole) {
+        playerScore.innerHTML = parseInt(playerScore.innerHTML || '0') + 10;
+      } else {
+        cpuScore.innerHTML = parseInt(cpuScore.innerHTML || '0') + 10;
+      }
+    }
+
+    // Add a click event to remove the overlay and reset the game
+    overlay.addEventListener('click', () => {
+      document.body.removeChild(overlay);
+      resultMessage.style.display = 'none';
+      subResultMsg.style.display = 'none';
+
+      // Call your reset game function here
+      // resetGame();
+    });
+  }
+
+  const MAX_CLASSLIST_SIZE = 1;
+
+  function executeCpuTurn() {
+    if (!gameActive) return;
+
+    function getRandomBox() {
+      return Math.floor(Math.random() * 9);
+    }
+
+    let box = null;
+    let attempts = 0;
+    const maxAttempts = 20;
+
+    do {
+      box = boxes[getRandomBox()];
+      attempts++;
+      if (attempts > maxAttempts) {
+        console.log('No empty boxes found');
+        return;
+      }
+    } while (box.classList.length > MAX_CLASSLIST_SIZE || box.innerHTML !== '');
+
+    console.log(
+      `(CPU) Found unoccupied box: ${Array.from(boxes).indexOf(box)}`,
+    );
+
+    // Fill the box with CPU's role immediately
+    box.innerHTML =
+      cpuRole === astronautRole
+        ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 55px;" />'
+        : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 55px;" />';
+    box.classList.add(
+      cpuRole === astronautRole ? astronautClass : spaceshipClass,
+    );
+
+    // Add these styles to center the image
+
+    box.style.justifyContent = 'center';
+    box.style.alignItems = 'center';
+
+    // Check for win condition or draw after a short delay
+    setTimeout(() => {
+      if (checkWin(cpuRole)) {
+        endGame(cpuRole);
+      } else if (checkDraw()) {
+        endGame('draw');
+      } else {
+        isCpuTurn = false;
+      }
+    }, 100);
   }
 
   function nextRound() {
@@ -188,36 +344,17 @@ document.addEventListener('DOMContentLoaded', function () {
     nextRoundButton.addEventListener('click', () => {
       Array.from(boxes).forEach((box) => {
         box.innerHTML = '';
-        box.classList.remove('won', astronautClass, spaceshipClass);
+        box.classList.remove(
+          'userwon',
+          'cpuwon',
+          astronautClass,
+          spaceshipClass,
+        );
+        resultMessage.style.display = 'none';
       });
-      gameActive = true; // Reset the game state
+      gameActive = true;
+      isCpuTurn = false;
     });
   }
   nextRound();
-
-  const MAX_CLASSLIST_SIZE = 1;
-
-  function executeCpuTurn() {
-    let isBoxFilled = false;
-
-    // returns a random number from 0-8
-    function getRandomBox() {
-      return Math.floor(Math.random() * 9);
-    }
-
-    let box = null;
-    // getting a box that isnt occupied with an X or O
-    do {
-      box = boxes[getRandomBox()];
-    } while (box.classList.length < MAX_CLASSLIST_SIZE);
-    console.log(`(CPU) Found unoccupied box: ${box}`);
-
-    let roleFillBox = (box.innerHTML =
-      cpuRole === astronautRole
-        ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 75px;" />'
-        : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 75px;" />');
-    box.classList.add(roleFillBox);
-
-    isCpuTurn = false;
-  }
 });
