@@ -153,8 +153,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
       box.innerHTML =
         userRole === astronautRole
-          ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 55px;" />'
-          : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 55px;" />';
+          ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 75px;" />'
+          : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 75px;" />';
+      // Style the result message
+
       box.classList.add(
         userRole === astronautRole ? astronautClass : spaceshipClass,
       );
@@ -208,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resultMessage.style.cssText = `
         display: block;
         position: fixed;
-        top: 50%;
+        top: 35%;
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 1000;
@@ -228,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
     subResultMsg.style.cssText = `
      display: block;
      position: fixed;
-     top: 70%;
+     top: 58%;
      left: 50%;
      transform: translate(-50%, -50%);
      z-index: 1000;
@@ -316,8 +318,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fill the box with CPU's role immediately
     box.innerHTML =
       cpuRole === astronautRole
-        ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 55px;" />'
-        : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 55px;" />';
+        ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 75px;" />'
+        : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 75px;" />';
     box.classList.add(
       cpuRole === astronautRole ? astronautClass : spaceshipClass,
     );
@@ -336,11 +338,15 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         isCpuTurn = false;
       }
-    }, 100);
+    }, 200);
   }
+
+  let round = 1; // Define round outside the function to maintain its value
 
   function nextRound() {
     const nextRoundButton = document.getElementById('next-round-button');
+    const roundNum = document.getElementById('round-num');
+
     nextRoundButton.addEventListener('click', () => {
       Array.from(boxes).forEach((box) => {
         box.innerHTML = '';
@@ -350,11 +356,18 @@ document.addEventListener('DOMContentLoaded', function () {
           astronautClass,
           spaceshipClass,
         );
-        resultMessage.style.display = 'none';
       });
+
+      resultMessage.style.display = 'none';
+      subResultMsg.style.display = 'none';
+
+      round++; // Increment the round
+      roundNum.innerText = round; // Update the displayed round number
+
       gameActive = true;
       isCpuTurn = false;
     });
   }
+
   nextRound();
 });

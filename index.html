@@ -79,11 +79,11 @@
 
         <section id="game-section" class="game-section" style="display: none">
           <div class="main-section-game">
-            <h1>Galaxy Grid 2.0</h1>
+            <h1>Round <span id="round-num">1</span></h1>
           </div>
 
-          <table>
-            <div class="hero">
+          <div class="hero">
+            <table>
               <tr>
                 <td></td>
                 <td></td>
@@ -99,32 +99,34 @@
                 <td></td>
                 <td></td>
               </tr>
-            </div>
-          </table>
+            </table>
+          </div>
 
           <div id="result-message"></div>
           <div id="sub-result-message"></div>
 
-          <div class="game-buttons-container">
-            <button id="next-round-button">Next Round</button>
+          <div class="score-and-buttons">
+            <div class="game-buttons-container">
+              <button id="next-round-button">Next Round</button>
 
-            <button id="to-main-menu-button">
-              <a href="/index.html" id="new-game-sound">Main Menu</a>
-            </button>
-          </div>
-
-          <div class="player-scores">
-            <div class="p-1">
-              <h2>You</h2>
-              <div class="player-score">
-                <h3>Score:<span id="player-score-num">0</span></h3>
-              </div>
+              <button id="to-main-menu-button">
+                <a href="/index.html" id="new-game-sound">Main Menu</a>
+              </button>
             </div>
 
-            <div class="p-2">
-              <h2>Player 2</h2>
-              <div class="cpu-score">
-                <h3>Score:<span id="cpu-score-num">0</span></h3>
+            <div class="player-scores">
+              <div class="p-1">
+                <h2>You</h2>
+                <div class="player-score">
+                  <h3>Score:<span id="player-score-num">0</span></h3>
+                </div>
+              </div>
+
+              <div class="p-2">
+                <h2>Player 2</h2>
+                <div class="cpu-score">
+                  <h3>Score:<span id="cpu-score-num">0</span></h3>
+                </div>
               </div>
             </div>
           </div>

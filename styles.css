@@ -136,7 +136,7 @@ h1 {
 
 .main-section-game h1 {
   color: white;
-  font-size: 3rem;
+  font-size: 2rem;
   text-transform: uppercase;
   padding-top: 2rem;
   padding-left: 0;
@@ -223,7 +223,7 @@ footer h2 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(#ff869a4f, #6d52b9);
+  background: linear-gradient(#ff869a86, #8767df);
   border-radius: 50px;
 }
 
@@ -231,16 +231,6 @@ footer h2 {
   nav {
     padding-right: 2rem;
     padding-left: 1.5rem;
-  }
-}
-
-@media (min-width: 650px) {
-  p {
-    padding: 2rem;
-  }
-
-  .main-section-game h1 {
-    top: 35px;
   }
 }
 
@@ -345,7 +335,7 @@ footer h2 {
   letter-spacing: 1.3px;
   font-weight: 700;
   background: #d14f9f;
-  background: linear-gradient(90deg, #d14f4f 0%, rgb(79, 131, 209) 100%);
+  background: linear-gradient(90deg, #ee5959 0%, rgb(89, 147, 235) 100%);
   border: none;
   border-radius: 1000px;
   box-shadow: 12px 12px 24px rgba(69, 37, 71, 0.64);
@@ -386,15 +376,13 @@ footer h2 {
   padding-left: 18px;
   padding-right: 18px;
   background: #d14f9f;
-  background: linear-gradient(90deg, #8f4c79 0%, rgb(101, 111, 156) 100%);
+  background: linear-gradient(90deg, #ad5d92 0%, rgb(131, 143, 199) 100%);
   box-shadow: 12px 12px 24px rgba(23, 13, 24, 0.64);
   color: rgb(255, 255, 255);
 }
 
 #next-round-button:hover,
-#next-round-button:focus,
-#to-main-menu-button:hover,
-#to-main-menu-button:focus {
+#to-main-menu-button:hover {
   transform: translateY(-4px);
 }
 
@@ -412,7 +400,7 @@ footer h2 {
 
 .p-1 h2,
 .p-2 h2 {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   text-align: center;
 }
 
@@ -517,30 +505,108 @@ h3 {
   font-size: 2.3rem;
 }
 
-table {
-  margin: auto;
-  border-radius: 10px;
-  border-spacing: 10px;
-}
-
 td {
-  border: 3px solid #d38ebdda;
-  border-radius: 5px;
+  border: 3px solid #ffb5e8da;
   height: 82px;
   width: 82px;
   position: relative;
   z-index: 1000;
-  border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(8.8px);
   cursor: pointer;
   transition: box-shadow 0.25s;
-  z-index: 10;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  top: -190px; /* Adjust this value as needed */
+}
+
+.score-and-buttons {
+  height: 100%;
+  position: relative;
+  top: -170px; /* Adjust this value as needed */
+}
+
+@media (min-width: 1050px) {
+  .hero {
+    top: 0px; /* Adjust this value as needed */
+  }
+}
+
+@media (min-width: 580px) {
+  .game-section {
+    margin-top: 15rem;
+  }
+
+  #next-round-button,
+  #to-main-menu-button {
+    min-width: 55px;
+    min-height: 50px;
+    font-size: 16px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    top: -170px; /* Adjust this value as needed */
+  }
+
+  .score-and-buttons {
+    height: 100%;
+    position: relative;
+    top: -130px; /* Adjust this value as needed */
+  }
+
+  .p-2 h3,
+  .p-1 h3 {
+    font-size: 1.3rem;
+  }
+
+  .p-1 h2,
+  .p-2 h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (min-width: 650px) {
+  p {
+    padding: 2rem;
+  }
+
+  .main-section-game h1 {
+    top: 60px;
+  }
+
+  .hero {
+    top: -60px; /* Adjust this value as needed */
+    width: 100%; /* Adjust this percentage as needed */
+    margin: 0 auto; /* Centers the div horizontally */
+    transform: scale(
+      0.8
+    ); /* Adjust this value as needed (0.9 = 90% of original size) */
+    transform-origin: center top; /* Keeps the top center as the scaling origin */
+  }
+}
+
+table {
+  border-collapse: collapse;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(8.8px);
 }
 
 td:hover {
-  background: rgba(139, 31, 87, 0.2);
+  background: rgba(228, 29, 132, 0.2);
 }
 
 /* td span {
@@ -679,53 +745,33 @@ td span:nth-child(24) {
   margin-top: 20rem;
 }
 
-@media (min-width: 580px) {
-  .game-section {
-    margin-top: 15rem;
-  }
-
-  #next-round-button,
-  #to-main-menu-button {
-    min-width: 80px;
-    min-height: 60px;
-    font-size: 18px;
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-
-  .p-2 h3,
-  .p-1 h3 {
-    font-size: 1.3rem;
-  }
-
-  .p-1 h2,
-  .p-2 h2 {
-    font-size: 1.8rem;
-  }
-}
-
 @media (min-width: 1200px) {
   .game-buttons-container {
     gap: 80px;
   }
 }
 
-@media (min-width: 1250px) {
+@media (min-width: 1050px) {
   .game-buttons-container {
-    gap: 90px;
-    margin-top: 2.5rem;
+    gap: 70px;
+    margin-top: 5rem;
   }
 
   .p-2 {
     position: absolute;
-    left: 75%;
-    bottom: 65%;
+    left: 78%;
+    top: -500px;
   }
 
   .p-1 {
     position: absolute;
-    right: 75%;
-    bottom: 65%;
+    right: 78%;
+    top: -500px;
+  }
+
+  .p-2 h3,
+  .p-1 h3 {
+    font-size: 1.5rem;
   }
 }
 
@@ -744,10 +790,6 @@ td span:nth-child(24) {
 }
 
 @media (min-width: 650px) {
-  td {
-    height: 180px;
-    width: 180px;
-  }
   .game-section {
     margin-top: 15rem;
   }
@@ -771,34 +813,74 @@ td span:nth-child(24) {
   .game-section {
     margin-top: 15rem;
   }
+  .hero {
+    top: -100px;
+  }
+
+  .score-and-buttons {
+    top: -170px;
+  }
 }
 
 @media (min-width: 1050px) {
   .game-section {
     margin-top: 10rem;
   }
+
+  .hero {
+    top: -30px;
+  }
 }
 
 @media (min-width: 1450px) {
   .main-section-game h1 {
     top: 10px;
+    font-size: 3rem;
   }
 
   .game-section {
     margin-top: 7rem;
   }
+
+  .hero {
+    transform: scale(1);
+    top: -2px;
+  }
+
+  .score-and-buttons {
+    top: -30px;
+  }
+
+  .p-2 h2,
+  .p-1 h2 {
+    font-size: 2.5rem;
+  }
+
+  .p-2 {
+    left: 75%;
+    top: -600px;
+  }
+
+  .p-1 {
+    right: 75%;
+    top: -600px;
+  }
 }
 
 .userwon {
   background-color: rgba(183, 120, 255, 0.425) !important;
-  border: rgba(147, 230, 255, 0.897) 2px solid !important;
-  z-index: 100;
+  border-top: 3px solid rgba(147, 230, 255, 0.897) !important;
+  border-right: 3px solid rgba(147, 230, 255, 0.897) !important;
+  border-bottom: 3px solid rgba(147, 230, 255, 0.897) !important;
+  border-left: 3px solid rgba(147, 230, 255, 0.897) !important;
+  z-index: 1500;
 }
 
 .cpuwon {
   background-color: rgba(255, 120, 120, 0.425) !important;
-  border: rgba(244, 255, 147, 0.897) 2px solid !important;
-  z-index: 100;
+  border: rgba(244, 255, 147, 0.897) 3px solid !important;
+  border-top: rgba(244, 255, 147, 0.897) 3px solid !important;
+  z-index: 1500;
 }
 
 @media (max-width: 400px) {
