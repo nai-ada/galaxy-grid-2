@@ -1,61 +1,76 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // // adding audio elements
-  // const lobbyMusic = document.getElementById('lobby-audio');
-  // const menuClickAudio = document.getElementById('menu-click-audio');
-  // const roleClickAudio = document.getElementById('role-click-audio');
+  // adding audio elements
+  const lobbyMusic = document.getElementById('lobby-audio');
+  const menuClickAudio = document.getElementById('menu-click-audio');
+  const roleClickAudio = document.getElementById('role-click-audio');
+  const gameplayClick = document.getElementById('gameplay-click-audio');
+  const cpuGameplayClick = document.getElementById('cpu-gameplay-click-audio');
 
-  // // Set initial volume
-  // lobbyMusic.volume = 0.5;
-  // menuClickAudio.volume = 0.4;
-  // roleClickAudio.volume = 0.3;
+  // Set initial volume
+  lobbyMusic.volume = 0.2;
+  menuClickAudio.volume = 0.2;
+  roleClickAudio.volume = 0.2;
+  gameplayClick.volume = 0.2;
+  cpuGameplayClick.volume = 0.2;
 
-  // // Mute/Unmute buttons
-  // const mutedButton = document.getElementById('muted-button');
-  // const unmutedButton = document.getElementById('unmuted-button');
+  // Mute/Unmute buttons
+  const mutedButton = document.getElementById('muted-button');
+  const unmutedButton = document.getElementById('unmuted-button');
 
-  // // Check localStorage for mute state
-  // const isMuted = localStorage.getItem('isMuted') === 'true';
+  // Check localStorage for mute state
+  const isMuted = localStorage.getItem('isMuted') === 'true';
 
-  // // Set initial mute state based on localStorage - I have no idea how this even works the way I want it to, but it does
-  // [lobbyMusic, menuClickAudio, roleClickAudio].forEach((audio) => {
-  //   audio.muted = !isMuted;
-  // });
+  // Set initial mute state based on localStorage - I have no idea how this even works the way I want it to, but it does
+  [
+    lobbyMusic,
+    menuClickAudio,
+    roleClickAudio,
+    gameplayClick,
+    cpuGameplayClick,
+  ].forEach((audio) => {
+    audio.muted = isMuted;
+  });
 
-  // if (!isMuted) {
-  //   unmutedButton.style.display = 'none';
-  //   mutedButton.style.display = 'block';
-  // } else {
-  //   unmutedButton.style.display = 'block';
-  //   mutedButton.style.display = 'none';
-  // }
+  if (isMuted) {
+    unmutedButton.style.display = 'none';
+    mutedButton.style.display = 'block';
+  } else {
+    unmutedButton.style.display = 'block';
+    mutedButton.style.display = 'none';
+  }
 
-  // function toggleMute() {
-  //   const newMuteState = !lobbyMusic.muted;
-  //   [lobbyMusic, menuClickAudio, roleClickAudio].forEach((audio) => {
-  //     audio.muted = newMuteState;
-  //   });
+  function toggleMute() {
+    const newMuteState = !lobbyMusic.muted;
+    [
+      lobbyMusic,
+      menuClickAudio,
+      roleClickAudio,
+      gameplayClick,
+      cpuGameplayClick,
+    ].forEach((audio) => {
+      audio.muted = newMuteState;
+    });
 
-  //   if (newMuteState) {
-  //     unmutedButton.style.display = 'none';
-  //     mutedButton.style.display = 'block';
-  //     localStorage.setItem('isMuted', 'true');
-  //     console.log('no sound is playing!');
-  //   } else {
-  //     unmutedButton.style.display = 'block';
-  //     mutedButton.style.display = 'none';
-  //     localStorage.setItem('isMuted', 'false');
-  //     console.log('sound is playing!');
-  //   }
-  // }
+    if (newMuteState) {
+      unmutedButton.style.display = 'none';
+      mutedButton.style.display = 'block';
+      localStorage.setItem('isMuted', 'true');
+      console.log('no sound is playing!');
+    } else {
+      unmutedButton.style.display = 'block';
+      mutedButton.style.display = 'none';
+      localStorage.setItem('isMuted', 'false');
+      console.log('sound is playing!');
+    }
+  }
 
-  // mutedButton.addEventListener('click', toggleMute);
-  // unmutedButton.addEventListener('click', toggleMute);
+  mutedButton.addEventListener('click', toggleMute);
+  unmutedButton.addEventListener('click', toggleMute);
 
   // Navigation logic
   const startButton = document.getElementById('start-button');
   let astronautRole = document.getElementById('astronaut-role');
-  let spaceshipRole = document.getElementById('spaceship-role');
-  const nextRoundButton = document.getElementById('next-round-button'); // Renamed variable
+  let alienRole = document.getElementById('alien-role');
   let userRole = '';
   let cpuRole = '';
 
@@ -71,38 +86,38 @@ document.addEventListener('DOMContentLoaded', function () {
     roleClickAudio.play();
 
     userRole = astronautRole;
-    cpuRole = spaceshipRole;
+    cpuRole = alienRole;
   });
 
-  spaceshipRole.addEventListener('click', function () {
+  alienRole.addEventListener('click', function () {
     document.getElementById('selection-section').style.display = 'none';
     document.getElementById('game-section').style.display = 'block';
     roleClickAudio.play();
 
-    userRole = spaceshipRole;
+    userRole = alienRole;
     cpuRole = astronautRole;
   });
 
   // role selector logic
 
   isAstronautRoleClicked = false;
-  isSpaceshipRoleClicked = false;
+  isAlienRoleClicked = false;
 
   astronautRole.addEventListener('click', () => {
     if ((astronautRole = 'clicked')) {
       isAstronautRoleClicked = true;
       userRole = astronautRole;
-      cpuRole = spaceshipRole;
+      cpuRole = alienRole;
       console.log('Astronaut role clicked');
     }
   });
 
-  spaceshipRole.addEventListener('click', () => {
-    if ((spaceshipRole = 'clicked')) {
-      isSpaceshipRoleClicked = true;
-      userRole = spaceshipRole;
+  alienRole.addEventListener('click', () => {
+    if ((alienRole = 'clicked')) {
+      isAlienRoleClicked = true;
+      userRole = alienRole;
       cpuRole = astronautRole;
-      console.log('Spaceship role clicked');
+      console.log('Alien role clicked');
     }
   });
 
@@ -120,45 +135,36 @@ document.addEventListener('DOMContentLoaded', function () {
   ];
 
   let boxes = document.getElementsByTagName('td');
-  const spaceshipClass = 'spaceship';
+  const alienClass = 'alien';
   const astronautClass = 'astronaut';
   let playerScore = document.getElementById('player-score-num');
   let cpuScore = document.getElementById('cpu-score-num');
   let gameActive = true;
   let isCpuTurn = false;
   const resultMessage = document.getElementById('result-message');
-  const gameContainer = document.getElementById('game-container');
   const subResultMsg = document.getElementById('sub-result-message');
-  // let spans = document.getElementsByTagName('span');
+  const nextRoundButton = document.getElementById('next-round-button'); // Renamed variable
 
   Array.from(boxes).forEach((box, index) => {
     box.addEventListener('click', (e) => {
-      if (!gameActive || box.innerHTML !== '' || isCpuTurn) return;
+      // Check if the move is valid
+      if (!gameActive || box.innerHTML !== '' || isCpuTurn) {
+        return; // Exit the function if the move is not valid
+      }
 
       console.log(`box ${index} clicked`);
-      // // Add animation class to all spans within this box
-      // let spans = box.querySelectorAll('span');
-      // spans.forEach((span) => {
-      //   span.classList.add('anim');
-      // });
-
-      // // Remove animation class after 500ms
-      // setTimeout(() => {
-      //   spans.forEach((span) => {
-      //     span.classList.remove('anim');
-      //   });
-      // }, 500);
 
       // Apply user's move
 
+      gameplayClick.play();
       box.innerHTML =
         userRole === astronautRole
-          ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 75px;" />'
-          : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 75px;" />';
+          ? '<img src="icons/astronaut.png" alt="Astronaut" style="width: 75px;" />'
+          : '<img src="icons/alien.png" alt="Alien" style="width: 75px;" />';
       // Style the result message
 
       box.classList.add(
-        userRole === astronautRole ? astronautClass : spaceshipClass,
+        userRole === astronautRole ? astronautClass : alienClass,
       );
       // Add these styles to center the image
       box.style.justifyContent = 'center';
@@ -184,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const boxesInCombination = combination.map((i) => boxes[i]);
       return boxesInCombination.every((box) =>
         box.classList.contains(
-          role === astronautRole ? astronautClass : spaceshipClass,
+          role === astronautRole ? astronautClass : alienClass,
         ),
       );
     });
@@ -192,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function endGame(result) {
     gameActive = false;
+    nextRoundButton.disabled = false; // Enable the button when the game ends
 
     // Create an overlay div for the blurred background
     const overlay = document.createElement('div');
@@ -210,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function () {
     resultMessage.style.cssText = `
         display: block;
         position: fixed;
-        top: 35%;
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 1000;
@@ -223,6 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
         background-color: rgba(0, 0, 0, 0.5);
         padding: 1rem;
         border-radius: 20px;
+     
 
     `;
 
@@ -230,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
     subResultMsg.style.cssText = `
      display: block;
      position: fixed;
-     top: 58%;
+    
      left: 50%;
      transform: translate(-50%, -50%);
      z-index: 1000;
@@ -242,6 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
      background-color: rgba(0, 0, 0, 0.5);
      padding: 1rem;
      border-radius: 20px;
+  
 
  `;
 
@@ -249,9 +257,9 @@ document.addEventListener('DOMContentLoaded', function () {
       resultMessage.innerHTML = 'Draw!';
       subResultMsg.innerHTML = `Click on Next Round to continue playing.`;
     } else {
-      const winningRole = result === astronautRole ? 'Astronaut' : 'Spaceship';
+      const winningRole = result === astronautRole ? 'Astronaut' : 'Alien';
       const winningClass =
-        result === astronautRole ? astronautClass : spaceshipClass;
+        result === astronautRole ? astronautClass : alienClass;
 
       // Apply winning class
       winCombinations.forEach((combination) => {
@@ -268,8 +276,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
 
-      resultMessage.innerHTML = `${winningRole} wins!`;
-      subResultMsg.innerHTML = `Click Next Round to continue playing.`;
+      resultMessage.innerHTML = `${winningRole} wins the round!`;
+      subResultMsg.innerHTML = `Click on the 'Next Round' button to continue playing.`;
 
       if (result === userRole) {
         playerScore.innerHTML = parseInt(playerScore.innerHTML || '0') + 10;
@@ -283,9 +291,6 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.removeChild(overlay);
       resultMessage.style.display = 'none';
       subResultMsg.style.display = 'none';
-
-      // Call your reset game function here
-      // resetGame();
     });
   }
 
@@ -318,11 +323,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fill the box with CPU's role immediately
     box.innerHTML =
       cpuRole === astronautRole
-        ? '<img src="icons/astronaut.svg" alt="Astronaut" style="width: 75px;" />'
-        : '<img src="icons/spaceship.svg" alt="Spaceship" style="width: 75px;" />';
-    box.classList.add(
-      cpuRole === astronautRole ? astronautClass : spaceshipClass,
-    );
+        ? '<img src="icons/astronaut.png" alt="Astronaut" style="width: 75px;" />'
+        : '<img src="icons/alien.png" alt="Alien" style="width: 75px;" />';
+    cpuGameplayClick.play();
+    box.classList.add(cpuRole === astronautRole ? astronautClass : alienClass);
 
     // Add these styles to center the image
 
@@ -341,33 +345,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 200);
   }
 
-  let round = 1; // Define round outside the function to maintain its value
+  let round = 1;
+  const roundNum = document.getElementById('round-num');
+
+  nextRoundButton.addEventListener('click', () => {
+    nextRound();
+  });
 
   function nextRound() {
-    const nextRoundButton = document.getElementById('next-round-button');
-    const roundNum = document.getElementById('round-num');
-
-    nextRoundButton.addEventListener('click', () => {
-      Array.from(boxes).forEach((box) => {
-        box.innerHTML = '';
-        box.classList.remove(
-          'userwon',
-          'cpuwon',
-          astronautClass,
-          spaceshipClass,
-        );
-      });
-
-      resultMessage.style.display = 'none';
-      subResultMsg.style.display = 'none';
-
-      round++; // Increment the round
-      roundNum.innerText = round; // Update the displayed round number
-
-      gameActive = true;
-      isCpuTurn = false;
+    Array.from(boxes).forEach((box) => {
+      menuClickAudio.play();
+      box.innerHTML = '';
+      box.classList.remove('userwon', 'cpuwon', astronautClass, alienClass);
     });
+
+    resultMessage.style.display = 'none';
+    subResultMsg.style.display = 'none';
+
+    round++;
+    roundNum.innerText = round;
+
+    gameActive = true;
+    isCpuTurn = false;
+    nextRoundButton.disabled = true; // Disable the button at the start of a new round
   }
 
-  nextRound();
+  // Initial setup
+  nextRoundButton.disabled = true;
 });

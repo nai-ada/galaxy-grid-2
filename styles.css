@@ -87,7 +87,14 @@ nav a {
 }
 
 .title {
-  font-weight: 200;
+  font-weight: bold;
+  background-image: linear-gradient(45deg, #ff6565, #96d5ff);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  font-size: 1.2rem;
 }
 
 nav ul {
@@ -308,8 +315,7 @@ footer h2 {
   transition: all 0.3s ease-in-out 0s;
 }
 
-.roles img:hover,
-.roles img:focus {
+.roles img:hover {
   transform: translateY(-4px);
   cursor: pointer;
 }
@@ -453,8 +459,7 @@ h3 {
 
 #start-button:hover,
 #start-button:focus,
-#toggleMuteButton img:hover,
-#toggleMuteButton img:focus {
+#toggleMuteButton img:hover {
   transform: translateY(-4px);
 }
 
@@ -601,12 +606,12 @@ td {
 
 table {
   border-collapse: collapse;
-  backdrop-filter: blur(7px);
+  backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(8.8px);
 }
 
 td:hover {
-  background: rgba(228, 29, 132, 0.2);
+  background: rgba(228, 29, 132, 0.274);
 }
 
 /* td span {
@@ -868,28 +873,60 @@ td span:nth-child(24) {
 }
 
 .userwon {
-  background-color: rgba(183, 120, 255, 0.425) !important;
-  border-top: 3px solid rgba(147, 230, 255, 0.897) !important;
-  border-right: 3px solid rgba(147, 230, 255, 0.897) !important;
-  border-bottom: 3px solid rgba(147, 230, 255, 0.897) !important;
-  border-left: 3px solid rgba(147, 230, 255, 0.897) !important;
+  background-color: rgba(183, 120, 255, 0.61) !important;
   z-index: 1500;
 }
 
 .cpuwon {
-  background-color: rgba(255, 120, 120, 0.425) !important;
-  border: rgba(244, 255, 147, 0.897) 3px solid !important;
-  border-top: rgba(244, 255, 147, 0.897) 3px solid !important;
+  background-color: rgba(255, 120, 120, 0.637) !important;
   z-index: 1500;
 }
 
-@media (max-width: 400px) {
+#sub-result-message {
+  width: 80%;
+  top: 60%;
+}
+#result-message {
+  width: 80%;
+  top: 40%;
+}
+
+@media (min-width: 400px) {
   #sub-result-message {
     font-size: 0.5rem;
-    padding: 0.3rem;
   }
   #result-message {
     font-size: 1rem;
-    padding: 0.5rem;
+  }
+}
+
+@media (min-width: 650px) {
+  #sub-result-message {
+    width: 50%;
+  }
+  #result-message {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1050px) {
+  #sub-result-message {
+    width: 40%;
+    top: 55%;
+  }
+  #result-message {
+    width: 40%;
+    top: 35%;
+  }
+}
+
+@media (min-width: 1350px) {
+  #sub-result-message {
+    width: 20%;
+    font-size: 5rem;
+  }
+  #result-message {
+    width: 20%;
+    font-size: 5rem;
   }
 }

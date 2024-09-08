@@ -18,12 +18,22 @@
           <source defer src="media/main-galaxy-bg.mp4" type="video/mp4" />
         </video>
         <audio src="media/menu-click.mp3" id="menu-click-audio"></audio>
-        <audio src="media/role-click.mp3" id="role-click-audio"></audio>
-        <!-- <audio src="media/lobby-music.mp3" id="lobby-audio" autoplay loop></audio> -->
+        <audio src="media/menu-click.mp3" id="role-click-audio"></audio>
+        <audio src="media/gameplay-click.mp3" id="gameplay-click-audio"></audio>
+        <audio
+          src="media/cpu-gameplay-click.mp3"
+          id="cpu-gameplay-click-audio"
+        ></audio>
+        <audio
+          src="media/lobby-music-1.mp3"
+          id="lobby-audio"
+          autoplay
+          loop
+        ></audio>
       </div>
       <nav>
         <ul class="main-nav">
-          <li class="title">Developed by Nadia Vespalec</li>
+          <li class="title">Galaxy Grid 2.0</li>
           <li><a href="https://www.nadiavespalec.com">My Portfolio 🪐</a></li>
         </ul>
         <div id="toggleMuteButton">
@@ -49,37 +59,39 @@
           class="selection-section"
           style="display: none"
         >
-          <h1>Select your role.</h1>
+          <h1>Select your role</h1>
           <h2>How to play:</h2>
           <p>
-            This is just like your regular game of Tic Tac Toe, except space
-            themed! You, the player, will choose between two roles: Spaceship,
-            or Astronaut. Whichever role you don't choose, the computer will use
-            to play against you. In the game, click on a box you want to claim
-            as your space. First one to reach three spaces on either a
-            horizontal, vertical, or angular axis wins! ☄️
+            This is just like your regular game of Tic Tac Toe; but space
+            themed! You, the player, can choose between two roles: Alien or
+            Astronaut. Whichever role you don't choose, the computer will use to
+            play against you. In the game, click on an empty space you want to
+            claim with your role. The first player to fill three spaces with
+            their role on either a horizontal, vertical, or angular axis wins
+            the round. The player with the highest score after 10 rounds wins
+            the game! ☄️
           </p>
           <div class="roles">
             <h2>Astronaut</h2>
             <img
-              src="icons/astronaut.svg"
+              src="icons/astronaut.png"
               width="100px"
               alt="purple and blue astronaut emoji"
               id="astronaut-role"
             />
-            <h2>Spaceship</h2>
+            <h2>Alien</h2>
             <img
-              src="icons/spaceship.svg"
+              src="icons/alien.png"
               width="100px"
-              alt="purple and blue spaceship emoji"
-              id="spaceship-role"
+              alt="purple and blue ufo with a green alien inside"
+              id="alien-role"
             />
           </div>
         </section>
 
         <section id="game-section" class="game-section" style="display: none">
           <div class="main-section-game">
-            <h1>Round <span id="round-num">1</span></h1>
+            <h1>Round <span id="round-num">1</span>/10</h1>
           </div>
 
           <div class="hero">
