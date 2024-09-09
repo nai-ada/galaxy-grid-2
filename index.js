@@ -9,6 +9,51 @@ document.addEventListener('DOMContentLoaded', function () {
   const wonAudio = document.getElementById('won-audio');
   const drawAudio = document.getElementById('draw-audio');
   const gameOverAudio = document.getElementById('gameover-audio');
+  const video = document.getElementById('background');
+  const galaxyImg = document.getElementById('galaxy-img');
+
+  function handleVideoOnMobile() {
+    if (window.innerWidth < 768) {
+      video.removeAttribute('autoplay');
+      video.pause();
+      video.src = ''; // Remove the source to prevent loading
+      video.style.display = 'none'; // Optionally hide the video element
+      galaxyImg.style.display = 'block'; // Show the galaxy image instead
+      galaxyImg.style.display = 'block'; // Optionally hide the video element
+      galaxyImg.style.position = 'fixed';
+      galaxyImg.style.right = '0';
+      galaxyImg.style.bottom = '0';
+      galaxyImg.style.maxWidth = '100%';
+      galaxyImg.style.minHeight = '100%';
+      galaxyImg.style.objectFit = 'cover';
+      galaxyImg.style.overflowX = 'hidden';
+      galaxyImg.style.zIndex = '-1';
+      galaxyImg.style.filter = 'brightness(60%)';
+    } else if (window.innerWidth > 768) {
+      galaxyImg.style.display = 'none';
+      video.src = 'media/main-galaxy-bg.mp4'; // Remove the source to prevent loading
+      video.play();
+      video.setAttribute('autoplay', '');
+      video.style.display = 'block'; // Optionally hide the video element
+      video.style.position = 'fixed';
+      video.style.right = '0';
+      video.style.bottom = '0';
+      video.style.maxWidth = '100%';
+      video.style.minHeight = '100%';
+      video.style.objectFit = 'cover';
+      video.style.overflowX = 'hidden';
+      video.style.zIndex = '-1';
+      video.style.filter = 'brightness(60%)';
+    }
+  }
+
+  galaxyImg.style.display = 'none';
+
+  // Run on page load
+  handleVideoOnMobile();
+
+  // Run on window resize
+  window.addEventListener('resize', handleVideoOnMobile);
 
   // Set initial volume
   lobbyMusic.volume = 0.2;
@@ -296,10 +341,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if (result === 'draw') {
         drawAudio.play();
         resultMessage.innerHTML = `<span style="color:  #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Draw</span>`;
-        subResultMsg.innerHTML = `Click on Next Round to continue playing.`;
+        subResultMsg.innerHTML = `Click anywhere to close this message then click the Next Round button to continue playing.`;
       } else {
         resultMessage.innerHTML = `${winningRole} wins the round!`;
-        subResultMsg.innerHTML = `Click on the 'Next Round' button to continue playing.`;
+        subResultMsg.innerHTML = `Click anywhere to close this message then click the Next Round button to continue playing.`;
       }
     } else if (round === 10) {
       gameOverAudio.play();
@@ -319,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
             subResultMsg.innerHTML = `<span style="color: #f8306f; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You lost the game!</span> Click on the 'New Game' button to start a new game.`;
             break;
           default:
-            subResultMsg.innerHTML = `It's a tie! Click on the 'New Game' button to start a new game.`;
+            subResultMsg.innerHTML = `It's a tie! Click anywhere to close this message then click on the New Game button to play again.`;
         }
       }
 

@@ -3,18 +3,6 @@ html {
   overflow-x: hidden;
 }
 
-.video-container video {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  max-width: 100%;
-  min-height: 100%;
-  object-fit: cover;
-  overflow-x: hidden;
-  z-index: -1;
-  filter: brightness(65%);
-}
-
 #toggleMuteButton {
   display: flex;
   align-items: center;
@@ -493,7 +481,12 @@ h3 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: ring 1.5s infinite;
+}
+
+@media (min-width: 768px) {
+  #start-button::after {
+    animation: ring 1.5s infinite;
+  }
 }
 
 #start-button:hover::after,
@@ -903,7 +896,7 @@ td span:nth-child(24) {
 
 #sub-result-message {
   width: 80%;
-  top: 60%;
+  top: 62%;
 }
 #result-message {
   width: 80%;
@@ -943,6 +936,7 @@ td span:nth-child(24) {
   #sub-result-message {
     width: 20%;
     font-size: 5rem;
+    top: 58%;
   }
   #result-message {
     width: 20%;
