@@ -244,100 +244,94 @@ document.addEventListener('DOMContentLoaded', function () {
         background-color: rgba(0, 0, 0, 0.5);
         padding: 1rem;
         border-radius: 20px;
-     
-
     `;
 
     // Style the result message
     subResultMsg.style.cssText = `
-     display: block;
-     position: fixed;
-    
-     left: 50%;
-     transform: translate(-50%, -50%);
-     z-index: 1000;
-     font-size: 1.3rem;
-     text-align: center;
-     color: white;
-     font-family: 'Poppins', sans-serif;
-     font-weight: bold;
-     background-color: rgba(0, 0, 0, 0.5);
-     padding: 1rem;
-     border-radius: 20px;
-  
+        display: block;
+        position: fixed;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        font-size: 1.3rem;
+        text-align: center;
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        font-weight: bold;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 1rem;
+        border-radius: 20px;
+    `;
 
- `;
+    const winningRole =
+      result === astronautRole
+        ? `<span style="color: #4cbdff; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Astronaut</span>`
+        : `<span style="color: #27fc6e; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Alien</span>`;
+    const winningClass = result === astronautRole ? astronautClass : alienClass;
 
-    if (result === 'draw') {
-      drawAudio.play();
-      resultMessage.innerHTML = `<span style="color:  #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Draw</span>`;
-      subResultMsg.innerHTML = `Click on Next Round to continue playing.`;
-    } else {
-      const winningRole =
-        result === astronautRole
-          ? `<span style="color: #4cbdff; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Astronaut</span>`
-          : `<span style="color: #27fc6e; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Alien</span>`;
-      const winningClass =
-        result === astronautRole ? astronautClass : alienClass;
-
-      // Apply winning class
-      winCombinations.forEach((combination) => {
-        if (
-          combination.every((index) =>
-            boxes[index].classList.contains(winningClass),
-          )
-        ) {
-          combination.forEach((index) => {
-            boxes[index].classList.add(
-              result === userRole ? 'userwon' : 'cpuwon',
-            );
-          });
-        }
-      });
-
-      if (result === userRole) {
-        playerScore.innerHTML = parseInt(playerScore.innerHTML || '0') + 10;
-        wonAudio.play();
-      } else {
-        cpuScore.innerHTML = parseInt(cpuScore.innerHTML || '0') + 10;
-        failAudio.play();
+    // Apply winning class
+    winCombinations.forEach((combination) => {
+      if (
+        combination.every((index) =>
+          boxes[index].classList.contains(winningClass),
+        )
+      ) {
+        combination.forEach((index) => {
+          boxes[index].classList.add(
+            result === userRole ? 'userwon' : 'cpuwon',
+          );
+        });
       }
+    });
 
-      if (round < 4) {
+    if (result === userRole) {
+      playerScore.innerHTML = parseInt(playerScore.innerHTML || '0') + 10;
+      wonAudio.play();
+    } else {
+      cpuScore.innerHTML = parseInt(cpuScore.innerHTML || '0') + 10;
+      failAudio.play();
+    }
+
+    if (round < 10) {
+      if (result === 'draw') {
+        drawAudio.play();
+        resultMessage.innerHTML = `<span style="color:  #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Draw</span>`;
+        subResultMsg.innerHTML = `Click on Next Round to continue playing.`;
+      } else {
         resultMessage.innerHTML = `${winningRole} wins the round!`;
         subResultMsg.innerHTML = `Click on the 'Next Round' button to continue playing.`;
-      } else if (round === 4) {
-        gameOverAudio.play();
-        resultMessage.innerHTML = 'Game Over!';
+      }
+    } else if (round === 10) {
+      gameOverAudio.play();
+      resultMessage.innerHTML = 'Game Over!';
 
-        const playerScoreValue = parseInt(playerScore.innerHTML || '0');
-        const cpuScoreValue = parseInt(cpuScore.innerHTML || '0');
+      const playerScoreValue = parseInt(playerScore.innerHTML || '0');
+      const cpuScoreValue = parseInt(cpuScore.innerHTML || '0');
 
-        if (playerScoreValue === cpuScoreValue) {
-          subResultMsg.innerHTML = `<span style="color: #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">It's a tie!</span> Click on the 'New Game' button to start a new game.`;
-        } else {
-          switch (true) {
-            case playerScoreValue > cpuScoreValue:
-              subResultMsg.innerHTML = `<span style="color: #31ebc9; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You won the game!</span> Click on the 'New Game' button to start a new game.`;
-              break;
-            case cpuScoreValue > playerScoreValue:
-              subResultMsg.innerHTML = `<span style="color: #f8306f; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You lost the game!</span> Click on the 'New Game' button to start a new game.`;
-              break;
-            default:
-              subResultMsg.innerHTML = `It's a tie! Click on the 'New Game' button to start a new game.`;
-          }
+      if (playerScoreValue === cpuScoreValue) {
+        subResultMsg.innerHTML = `<span style="color: #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">It's a tie!</span> Click on the 'New Game' button to start a new game.`;
+      } else {
+        switch (true) {
+          case playerScoreValue > cpuScoreValue:
+            subResultMsg.innerHTML = `<span style="color: #31ebc9; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You won the game!</span> Click on the 'New Game' button to start a new game.`;
+            break;
+          case cpuScoreValue > playerScoreValue:
+            subResultMsg.innerHTML = `<span style="color: #f8306f; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You lost the game!</span> Click on the 'New Game' button to start a new game.`;
+            break;
+          default:
+            subResultMsg.innerHTML = `It's a tie! Click on the 'New Game' button to start a new game.`;
         }
-
-        nextRoundButton.innerHTML = 'New Game';
       }
 
-      // Add a click event to remove the overlay and reset the game
-      overlay.addEventListener('click', () => {
-        document.body.removeChild(overlay);
-        resultMessage.style.display = 'none';
-        subResultMsg.style.display = 'none';
-      });
+      nextRoundButton.innerHTML = 'New Game';
     }
+
+    // Add a click event to remove the overlay and reset the game
+    overlay.addEventListener('click', () => {
+      document.body.removeChild(overlay);
+      resultMessage.style.display = 'none';
+      subResultMsg.style.display = 'none';
+    });
   }
 
   function newGameReset() {
@@ -438,16 +432,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     round++;
 
-    if (round < 4) {
+    if (round < 10) {
       roundNum.innerText = round;
       removeMsgForFinalMsg.style.display = 'block';
       finalRoundMsg.style.display = 'none';
-    } else if (round === 4) {
+    } else if (round === 10) {
       removeMsgForFinalMsg.style.display = 'none'; // Corrected from roundNum.display
       finalRoundMsg.style.display = 'block';
-    } else if (round > 5) {
-      gameOverMessage();
-      return;
     }
 
     gameActive = true;
