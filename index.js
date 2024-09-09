@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const roleClickAudio = document.getElementById('role-click-audio');
   const gameplayClick = document.getElementById('gameplay-click-audio');
   const cpuGameplayClick = document.getElementById('cpu-gameplay-click-audio');
+  const failAudio = document.getElementById('fail-audio');
+  const wonAudio = document.getElementById('won-audio');
+  const drawAudio = document.getElementById('draw-audio');
+  const gameOverAudio = document.getElementById('gameover-audio');
 
   // Set initial volume
   lobbyMusic.volume = 0.2;
@@ -12,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
   roleClickAudio.volume = 0.2;
   gameplayClick.volume = 0.2;
   cpuGameplayClick.volume = 0.2;
+  wonAudio.volume = 0.3;
+  failAudio.volume = 0.3;
+  gameOverAudio.volume = 0.3;
 
   // Mute/Unmute buttons
   const mutedButton = document.getElementById('muted-button');
@@ -27,6 +34,10 @@ document.addEventListener('DOMContentLoaded', function () {
     roleClickAudio,
     gameplayClick,
     cpuGameplayClick,
+    gameOverAudio,
+    wonAudio,
+    failAudio,
+    drawAudio,
   ].forEach((audio) => {
     audio.muted = isMuted;
   });
@@ -47,6 +58,10 @@ document.addEventListener('DOMContentLoaded', function () {
       roleClickAudio,
       gameplayClick,
       cpuGameplayClick,
+      gameOverAudio,
+      wonAudio,
+      failAudio,
+      drawAudio,
     ].forEach((audio) => {
       audio.muted = newMuteState;
     });
@@ -208,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
         left: 0;
         width: 100%;
         height: 100%;
-        backdrop-filter: blur(2px);
+        backdrop-filter: blur(5px);
         z-index: 999;
     `;
     document.body.appendChild(overlay);
@@ -254,10 +269,14 @@ document.addEventListener('DOMContentLoaded', function () {
  `;
 
     if (result === 'draw') {
-      resultMessage.innerHTML = 'Draw!';
+      drawAudio.play();
+      resultMessage.innerHTML = `<span style="color:  #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Draw</span>`;
       subResultMsg.innerHTML = `Click on Next Round to continue playing.`;
     } else {
-      const winningRole = result === astronautRole ? 'Astronaut' : 'Alien';
+      const winningRole =
+        result === astronautRole
+          ? `<span style="color: #4cbdff; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Astronaut</span>`
+          : `<span style="color: #27fc6e; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Alien</span>`;
       const winningClass =
         result === astronautRole ? astronautClass : alienClass;
 
@@ -276,22 +295,69 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
 
-      resultMessage.innerHTML = `${winningRole} wins the round!`;
-      subResultMsg.innerHTML = `Click on the 'Next Round' button to continue playing.`;
-
       if (result === userRole) {
         playerScore.innerHTML = parseInt(playerScore.innerHTML || '0') + 10;
+        wonAudio.play();
       } else {
         cpuScore.innerHTML = parseInt(cpuScore.innerHTML || '0') + 10;
+        failAudio.play();
       }
-    }
 
-    // Add a click event to remove the overlay and reset the game
-    overlay.addEventListener('click', () => {
-      document.body.removeChild(overlay);
-      resultMessage.style.display = 'none';
-      subResultMsg.style.display = 'none';
+      if (round < 4) {
+        resultMessage.innerHTML = `${winningRole} wins the round!`;
+        subResultMsg.innerHTML = `Click on the 'Next Round' button to continue playing.`;
+      } else if (round === 4) {
+        gameOverAudio.play();
+        resultMessage.innerHTML = 'Game Over!';
+
+        const playerScoreValue = parseInt(playerScore.innerHTML || '0');
+        const cpuScoreValue = parseInt(cpuScore.innerHTML || '0');
+
+        if (playerScoreValue === cpuScoreValue) {
+          subResultMsg.innerHTML = `<span style="color: #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">It's a tie!</span> Click on the 'New Game' button to start a new game.`;
+        } else {
+          switch (true) {
+            case playerScoreValue > cpuScoreValue:
+              subResultMsg.innerHTML = `<span style="color: #31ebc9; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You won the game!</span> Click on the 'New Game' button to start a new game.`;
+              break;
+            case cpuScoreValue > playerScoreValue:
+              subResultMsg.innerHTML = `<span style="color: #f8306f; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You lost the game!</span> Click on the 'New Game' button to start a new game.`;
+              break;
+            default:
+              subResultMsg.innerHTML = `It's a tie! Click on the 'New Game' button to start a new game.`;
+          }
+        }
+
+        nextRoundButton.innerHTML = 'New Game';
+      }
+
+      // Add a click event to remove the overlay and reset the game
+      overlay.addEventListener('click', () => {
+        document.body.removeChild(overlay);
+        resultMessage.style.display = 'none';
+        subResultMsg.style.display = 'none';
+      });
+    }
+  }
+
+  function newGameReset() {
+    round = 1;
+    roundNum.innerText = round;
+    removeMsgForFinalMsg.style.display = 'block';
+    finalRoundMsg.style.display = 'none';
+
+    Array.from(boxes).forEach((box) => {
+      box.innerHTML = '';
+      box.classList.remove('userwon', 'cpuwon', astronautClass, alienClass);
     });
+
+    playerScore.innerHTML = '0';
+    cpuScore.innerHTML = '0';
+
+    gameActive = true;
+    isCpuTurn = false;
+    nextRoundButton.innerHTML = 'Next Round';
+    nextRoundButton.disabled = true;
   }
 
   const MAX_CLASSLIST_SIZE = 1;
@@ -347,9 +413,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let round = 1;
   const roundNum = document.getElementById('round-num');
+  const finalRoundMsg = document.getElementById('final-msg');
+  finalRoundMsg.innerText = 'Final Round!';
+  finalRoundMsg.style.display = 'none'; // Initially hide the final round message
+  const removeMsgForFinalMsg = document.getElementById('remove-all-for-final');
 
   nextRoundButton.addEventListener('click', () => {
-    nextRound();
+    if (nextRoundButton.innerHTML === 'New Game') {
+      newGameReset();
+    } else {
+      nextRound();
+    }
   });
 
   function nextRound() {
@@ -363,7 +437,18 @@ document.addEventListener('DOMContentLoaded', function () {
     subResultMsg.style.display = 'none';
 
     round++;
-    roundNum.innerText = round;
+
+    if (round < 4) {
+      roundNum.innerText = round;
+      removeMsgForFinalMsg.style.display = 'block';
+      finalRoundMsg.style.display = 'none';
+    } else if (round === 4) {
+      removeMsgForFinalMsg.style.display = 'none'; // Corrected from roundNum.display
+      finalRoundMsg.style.display = 'block';
+    } else if (round > 5) {
+      gameOverMessage();
+      return;
+    }
 
     gameActive = true;
     isCpuTurn = false;
@@ -372,4 +457,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Initial setup
   nextRoundButton.disabled = true;
+  roundNum.innerText = round; // Set initial round number
 });

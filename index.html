@@ -20,6 +20,11 @@
         <audio src="media/menu-click.mp3" id="menu-click-audio"></audio>
         <audio src="media/menu-click.mp3" id="role-click-audio"></audio>
         <audio src="media/gameplay-click.mp3" id="gameplay-click-audio"></audio>
+        <audio src="media/fail.mp3" id="fail-audio"></audio>
+        <audio src="media/won.mp3" id="won-audio"></audio>
+        <audio src="media/gameover.mp3" id="gameover-audio"></audio>
+        <audio src="media/draw.mp3" id="draw-audio"></audio>
+
         <audio
           src="media/cpu-gameplay-click.mp3"
           id="cpu-gameplay-click-audio"
@@ -91,7 +96,10 @@
 
         <section id="game-section" class="game-section" style="display: none">
           <div class="main-section-game">
-            <h1>Round <span id="round-num">1</span>/10</h1>
+            <h1><span id="final-msg"></span></h1>
+            <h1 id="remove-all-for-final">
+              Round <span id="round-num">1 </span> of 10
+            </h1>
           </div>
 
           <div class="hero">

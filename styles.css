@@ -143,9 +143,9 @@ h1 {
 
 .main-section-game h1 {
   color: white;
-  font-size: 2rem;
-  text-transform: uppercase;
   padding-top: 2rem;
+  font-size: 1.8rem;
+  text-transform: uppercase;
   padding-left: 0;
   padding-right: 0;
   background-image: linear-gradient(45deg, #96d5ff, #ff65a5);
@@ -232,6 +232,20 @@ footer h2 {
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(#ff869a86, #8767df);
   border-radius: 50px;
+}
+
+.game-section {
+  margin-top: 20rem;
+}
+
+@media (min-width: 390px) {
+  .main-section-game h1 {
+    padding-top: 1rem;
+  }
+
+  .game-section {
+    margin-top: 22rem;
+  }
 }
 
 @media (min-width: 430px) {
@@ -746,10 +760,6 @@ td span:nth-child(24) {
   }
 } */
 
-.game-section {
-  margin-top: 20rem;
-}
-
 @media (min-width: 1200px) {
   .game-buttons-container {
     gap: 80px;
@@ -785,12 +795,21 @@ td span:nth-child(24) {
     height: 100px;
     width: 100px;
   }
+
+  .game-section h1 {
+    padding-top: 2rem;
+    font-size: 2rem;
+  }
 }
 
 @media (min-width: 500px) {
   td {
     height: 130px;
     width: 130px;
+  }
+
+  .game-section {
+    margin-top: 20rem;
   }
 }
 
