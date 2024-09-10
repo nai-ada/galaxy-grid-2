@@ -28,10 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const mutedButton = document.getElementById('muted-button');
   const unmutedButton = document.getElementById('unmuted-button');
 
-  // Check localStorage for mute state, default to true (muted) if not set
-  const isMuted = localStorage.getItem('isMuted') !== 'false';
+  // Check localStorage for mute state
+  const isMuted = localStorage.getItem('isMuted') === 'true';
 
-  // Set initial mute state based on localStorage
+  // Set initial mute state based on localStorage - I have no idea how this even works the way I want it to, but it does
   [
     lobbyMusic,
     menuClickAudio,
@@ -46,9 +46,13 @@ document.addEventListener('DOMContentLoaded', function () {
     audio.muted = isMuted;
   });
 
-  // Set initial button visibility
-  unmutedButton.style.display = isMuted ? 'none' : 'block';
-  mutedButton.style.display = isMuted ? 'block' : 'none';
+  if (isMuted) {
+    unmutedButton.style.display = 'none';
+    mutedButton.style.display = 'block';
+  } else {
+    unmutedButton.style.display = 'block';
+    mutedButton.style.display = 'none';
+  }
 
   function toggleMute() {
     const newMuteState = !lobbyMusic.muted;
