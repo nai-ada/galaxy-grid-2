@@ -12,6 +12,76 @@ document.addEventListener('DOMContentLoaded', function () {
   const video = document.getElementById('background');
   const galaxyImg = document.getElementById('galaxy-img');
 
+  lobbyMusic.load();
+
+  // Set initial volume
+  lobbyMusic.volume = 0.2;
+  menuClickAudio.volume = 0.2;
+  roleClickAudio.volume = 0.2;
+  gameplayClick.volume = 0.2;
+  cpuGameplayClick.volume = 0.2;
+  wonAudio.volume = 0.3;
+  failAudio.volume = 0.3;
+  gameOverAudio.volume = 0.3;
+
+  // Mute/Unmute buttons
+  const mutedButton = document.getElementById('muted-button');
+  const unmutedButton = document.getElementById('unmuted-button');
+
+  // Check localStorage for mute state, default to true (muted) if not set
+  const isMuted = localStorage.getItem('isMuted') !== 'false';
+
+  // Set initial mute state based on localStorage
+  [
+    lobbyMusic,
+    menuClickAudio,
+    roleClickAudio,
+    gameplayClick,
+    cpuGameplayClick,
+    gameOverAudio,
+    wonAudio,
+    failAudio,
+    drawAudio,
+  ].forEach((audio) => {
+    audio.muted = isMuted;
+  });
+
+  // Set initial button visibility
+  unmutedButton.style.display = isMuted ? 'none' : 'block';
+  mutedButton.style.display = isMuted ? 'block' : 'none';
+
+  function toggleMute() {
+    const newMuteState = !lobbyMusic.muted;
+    [
+      lobbyMusic,
+      menuClickAudio,
+      roleClickAudio,
+      gameplayClick,
+      cpuGameplayClick,
+      gameOverAudio,
+      wonAudio,
+      failAudio,
+      drawAudio,
+    ].forEach((audio) => {
+      audio.muted = newMuteState;
+    });
+
+    if (newMuteState) {
+      unmutedButton.style.display = 'none';
+      mutedButton.style.display = 'block';
+      localStorage.setItem('isMuted', 'true');
+      console.log('no sound is playing!');
+    } else {
+      unmutedButton.style.display = 'block';
+      mutedButton.style.display = 'none';
+      localStorage.setItem('isMuted', 'false');
+      console.log('sound is playing!');
+    }
+  }
+
+  mutedButton.addEventListener('click', toggleMute);
+  unmutedButton.addEventListener('click', toggleMute);
+
   function handleVideoOnMobile() {
     if (window.innerWidth < 768) {
       video.removeAttribute('autoplay');
@@ -54,78 +124,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Run on window resize
   window.addEventListener('resize', handleVideoOnMobile);
-
-  // Set initial volume
-  lobbyMusic.volume = 0.2;
-  menuClickAudio.volume = 0.2;
-  roleClickAudio.volume = 0.2;
-  gameplayClick.volume = 0.2;
-  cpuGameplayClick.volume = 0.2;
-  wonAudio.volume = 0.3;
-  failAudio.volume = 0.3;
-  gameOverAudio.volume = 0.3;
-
-  // Mute/Unmute buttons
-  const mutedButton = document.getElementById('muted-button');
-  const unmutedButton = document.getElementById('unmuted-button');
-
-  // Check localStorage for mute state
-  const isMuted = localStorage.getItem('isMuted') === 'true';
-
-  // Set initial mute state based on localStorage - I have no idea how this even works the way I want it to, but it does
-  [
-    lobbyMusic,
-    menuClickAudio,
-    roleClickAudio,
-    gameplayClick,
-    cpuGameplayClick,
-    gameOverAudio,
-    wonAudio,
-    failAudio,
-    drawAudio,
-  ].forEach((audio) => {
-    audio.muted = isMuted;
-  });
-
-  if (isMuted) {
-    unmutedButton.style.display = 'none';
-    mutedButton.style.display = 'block';
-  } else {
-    unmutedButton.style.display = 'block';
-    mutedButton.style.display = 'none';
-  }
-
-  function toggleMute() {
-    const newMuteState = !lobbyMusic.muted;
-    [
-      lobbyMusic,
-      menuClickAudio,
-      roleClickAudio,
-      gameplayClick,
-      cpuGameplayClick,
-      gameOverAudio,
-      wonAudio,
-      failAudio,
-      drawAudio,
-    ].forEach((audio) => {
-      audio.muted = newMuteState;
-    });
-
-    if (newMuteState) {
-      unmutedButton.style.display = 'none';
-      mutedButton.style.display = 'block';
-      localStorage.setItem('isMuted', 'true');
-      console.log('no sound is playing!');
-    } else {
-      unmutedButton.style.display = 'block';
-      mutedButton.style.display = 'none';
-      localStorage.setItem('isMuted', 'false');
-      console.log('sound is playing!');
-    }
-  }
-
-  mutedButton.addEventListener('click', toggleMute);
-  unmutedButton.addEventListener('click', toggleMute);
 
   // Navigation logic
   const startButton = document.getElementById('start-button');
@@ -286,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
         font-family: 'Poppins', sans-serif;
         text-transform: uppercase;
         font-weight: bold;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.8);
         padding: 1rem;
         border-radius: 20px;
     `;
@@ -303,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
         color: white;
         font-family: 'Poppins', sans-serif;
         font-weight: bold;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.8);
         padding: 1rem;
         border-radius: 20px;
     `;
@@ -341,10 +339,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if (result === 'draw') {
         drawAudio.play();
         resultMessage.innerHTML = `<span style="color:  #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Draw</span>`;
-        subResultMsg.innerHTML = `Click anywhere to close this message then click the Next Round button to continue playing.`;
+        subResultMsg.innerHTML = `Click anywhere to close this message, then click the Next Round button to continue playing.`;
       } else {
         resultMessage.innerHTML = `${winningRole} wins the round!`;
-        subResultMsg.innerHTML = `Click anywhere to close this message then click the Next Round button to continue playing.`;
+        subResultMsg.innerHTML = `Click anywhere to close this message, then click the Next Round button to continue playing.`;
       }
     } else if (round === 10) {
       gameOverAudio.play();
@@ -354,17 +352,17 @@ document.addEventListener('DOMContentLoaded', function () {
       const cpuScoreValue = parseInt(cpuScore.innerHTML || '0');
 
       if (playerScoreValue === cpuScoreValue) {
-        subResultMsg.innerHTML = `<span style="color: #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">It's a tie!</span> Click on the 'New Game' button to start a new game.`;
+        subResultMsg.innerHTML = `<span style="color: #FFD700; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">It's a tie!</span> Click on the New Game button to start a new game.`;
       } else {
         switch (true) {
           case playerScoreValue > cpuScoreValue:
-            subResultMsg.innerHTML = `<span style="color: #31ebc9; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You won the game!</span> Click on the 'New Game' button to start a new game.`;
+            subResultMsg.innerHTML = `<span style="color: #31ebc9; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You won the game!</span> Click on the New Game button to start a new game.`;
             break;
           case cpuScoreValue > playerScoreValue:
-            subResultMsg.innerHTML = `<span style="color: #f8306f; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You lost the game!</span> Click on the 'New Game' button to start a new game.`;
+            subResultMsg.innerHTML = `<span style="color: #f8306f; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">You lost the game!</span> Click on the New Game button to start a new game.`;
             break;
           default:
-            subResultMsg.innerHTML = `It's a tie! Click anywhere to close this message then click on the New Game button to play again.`;
+            subResultMsg.innerHTML = `It's a tie! Click anywhere to close this message, then click on the New Game button to play again.`;
         }
       }
 

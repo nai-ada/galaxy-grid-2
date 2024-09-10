@@ -13,11 +13,18 @@
 
   <body>
     <div id="game-container">
-      <div class="video-container">
-        <video playsinline autoplay muted loop id="background">
-          <source defer src="media/main-galaxy-bg.mp4" type="video/mp4" />
-        </video>
-        <img src="icons/galaxy-img.jpg" id="galaxy-img"></img>
+      <audio
+          src="media/lobby-music-1.mp3"
+          id="lobby-audio"
+          autoplay
+          loop
+        ></audio>
+        
+        <audio
+          src="media/cpu-gameplay-click.mp3"
+          id="cpu-gameplay-click-audio"
+        ></audio>
+        
         <audio src="media/menu-click.mp3" id="menu-click-audio"></audio>
         <audio src="media/menu-click.mp3" id="role-click-audio"></audio>
         <audio src="media/gameplay-click.mp3" id="gameplay-click-audio"></audio>
@@ -25,17 +32,14 @@
         <audio src="media/won.mp3" id="won-audio"></audio>
         <audio src="media/gameover.mp3" id="gameover-audio"></audio>
         <audio src="media/draw.mp3" id="draw-audio"></audio>
+        
+      <div class="video-container">
+        <video playsinline autoplay muted loop id="background">
+          <source defer src="media/main-galaxy-bg.mp4" type="video/mp4" />
+        </video>
+      <img src="icons/galaxy-img.jpg" id="galaxy-img"></img>
 
-        <audio
-          src="media/cpu-gameplay-click.mp3"
-          id="cpu-gameplay-click-audio"
-        ></audio>
-        <audio
-          src="media/lobby-music-1.mp3"
-          id="lobby-audio"
-          autoplay
-          loop
-        ></audio>
+        
       </div>
       <nav>
         <ul class="main-nav">
@@ -131,7 +135,7 @@
               <button id="next-round-button">Next Round</button>
 
               <button id="to-main-menu-button">
-                <a href="galaxy-grid-2/index.html" id="new-game-sound">Main Menu</a>
+                <a href="https://www.nadiavespalec.com/galaxy-grid-2/index.html" id="new-game-sound">Main Menu</a>
               </button>
             </div>
 
